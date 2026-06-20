@@ -14,7 +14,7 @@ app.add_middleware(
     expose_headers=["Access-Control-Allow-Origin"],
 )
 
-# Embedded telemetry bundle to bypass serverless file-system constraints
+# Embedded telemetry bundle
 DATA = [
     {"region": "apac", "service": "catalog", "latency_ms": 200.63, "uptime_pct": 97.657, "timestamp": 20250301},
     {"region": "apac", "service": "payments", "latency_ms": 102.46, "uptime_pct": 98.72, "timestamp": 20250302},
@@ -94,4 +94,5 @@ def get_metrics(payload: RequestPayload):
             "breaches": breaches
         }
         
-    return results
+    # THE FIX: Wrap the results inside a "regions" key
+    return {"regions": results}
