@@ -5,12 +5,13 @@ from typing import List
 
 app = FastAPI()
 
-# Enable CORS for POST requests from any origin
+# The community-verified CORS configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    expose_headers=["Access-Control-Allow-Origin"],
 )
 
 # Embedded telemetry bundle to bypass serverless file-system constraints
@@ -58,7 +59,6 @@ class RequestPayload(BaseModel):
     threshold_ms: float
 
 def calculate_p95(data: List[float]) -> float:
-    # Pure Python implementation of 95th percentile logic
     if not data: return 0.0
     sorted_data = sorted(data)
     idx = (len(sorted_data) - 1) * 0.95
